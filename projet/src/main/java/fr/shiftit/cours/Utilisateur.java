@@ -3,47 +3,30 @@ package fr.shiftit.cours;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class Department {
+public class Utilisateur {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private String name;
-	private String address;
-	private String code;
+	private String id;
+	private String password;
 	
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(Long departmentId) {
-		this.id = departmentId;
+	public void setId(String id) {
+		this.id = id;
 	}
-	public String getName() {
-		return name;
+	public String getPassword() {
+		return password;
 	}
-	public void setName(String departmentName) {
-		this.name = departmentName;
-	}
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String departmentAddress) {
-		this.address = departmentAddress;
-	}
-	public String getCode() {
-		return code;
-	}
-	public void setCode(String departmentCode) {
-		this.code = departmentCode;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(address, code, name);
+		return Objects.hash(id, password);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -53,9 +36,11 @@ public class Department {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Department other = (Department) obj;
-		return Objects.equals(address, other.address)
-				&& Objects.equals(code, other.code)
-				&& Objects.equals(name, other.name);
+		Utilisateur other = (Utilisateur) obj;
+		return Objects.equals(id, other.id) && Objects.equals(password, other.password);
 	}
+	
+	
+	
+
 }
