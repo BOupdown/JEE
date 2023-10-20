@@ -8,6 +8,9 @@
         <input type="text" id="username" name="username"><br>
         <label for="password">Mot de passe :</label>
         <input type="password" id="password" name="password"><br>
+         <div th:if="${error}">
+    	<p th:text="${error}"></p>
+		</div>
         <input type="submit" value="Se connecter">
     </form>
        <p>Si vous n'êtes pas encore inscrit, <a href="inscription">Inscrivez-vous ici</a></p>

@@ -18,7 +18,13 @@ public class ConnexionController {
 	UtilisateurRepository utilisateurRepository;
 	
 	@GetMapping(path = "/connexion")
-	public String connexion(Model model) {
+	public String connexion(Model model,HttpSession session) {
+		
+		if(session.getAttribute("user")!=null) {
+			
+			return"redirect:/index";
+			
+		}
 	
 		return "connexion";
 	}
@@ -26,12 +32,13 @@ public class ConnexionController {
 	
 	
     @PostMapping(path= "/connexion")
-    public String processConnexion(@RequestParam String username, @RequestParam String password, HttpSession session) {
+    public String processConnexion(Model model, @RequestParam String username, @RequestParam String password, HttpSession session) {
     	
     	Optional<Utilisateur> utilisateur = utilisateurRepository.findByUsernameAndPassword(username, password);
     	
     	if(utilisateur.isEmpty()) {
-    		return "redirect:/connexion";
+    		model.addAttribute("error", "Nom d'utilisateur ou mot de passe incorrect");
+    		return "connexion";
     	}
     	session.setAttribute("user", utilisateur.get());
     	

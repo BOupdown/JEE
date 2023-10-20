@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class InscriptionController {
 	
@@ -15,19 +17,25 @@ public class InscriptionController {
     private UtilisateurRepository utilisateurRepository;
 	
 	@GetMapping(path = "/inscription")
-	public String inscription(Model model) {
+	public String inscription(Model model,HttpSession session) {
+		
+		if(session.getAttribute("user")!=null) {
+			
+			return"redirect:/index";
+			
+		}
 	
 		return "inscription";
 	}
 	
     @PostMapping(path= "/inscription")
-    public String processInscription(@RequestParam String username, @RequestParam String password) {
+    public String processInscription(Model model,@RequestParam String username, @RequestParam String password) {
         
         Utilisateur existingUser = utilisateurRepository.findByUsername(username).orElse(null);
 
         if (existingUser != null) {
-            // Le nom d'utilisateur existe déjà, vous pouvez gérer cela ici, par exemple, en renvoyant un message d'erreur
-            return "redirect:/inscription";
+        	model.addAttribute("error", "Le nom d'utilisateur existe déjà. Veuillez en choisir un autre.");
+        	return "inscription";
         } else {
        
  
