@@ -23,7 +23,7 @@ public class InscriptionController {
     @PostMapping(path= "/inscription")
     public String processInscription(@RequestParam String username, @RequestParam String password) {
         
-        Utilisateur existingUser = utilisateurRepository.findById(username).orElse(null);
+        Utilisateur existingUser = utilisateurRepository.findByUsername(username).orElse(null);
 
         if (existingUser != null) {
             // Le nom d'utilisateur existe déjà, vous pouvez gérer cela ici, par exemple, en renvoyant un message d'erreur
@@ -34,10 +34,11 @@ public class InscriptionController {
     	
     	
         Utilisateur utilisateur = new Utilisateur();
-        utilisateur.setId(username);
+        utilisateur.setUsername(username);
         utilisateur.setPassword(password);
         utilisateurRepository.save(utilisateur);
-    	
+        Utilisateur existingUser2 = utilisateurRepository.findByUsername(username).orElse(null);
+        System.out.println(existingUser2);
         return "redirect:/connexion";
     }
     }

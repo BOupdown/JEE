@@ -1,5 +1,14 @@
 <html>
-	<body>
-		hello 
-	</body>
+<head>
+    <title>Home Page</title>
+</head>
+<body>
+    <h1>Welcome to the Home Page</h1>
+
+    <div th:if="${session.user != null}">
+        <p th:text="'Welcome, ' + ${session.user.username}"></p>
+    </div>
+
+</body>
 </html>
+
