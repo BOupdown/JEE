@@ -1,0 +1,13 @@
+<html>
+<head>
+    <title>Page Produits</title>
+</head>
+<body>
+<h1>Product Names</h1>
+<ul>
+    <li th:each="product : ${produits}">
+        <span th:text="${product.nom}"></span>
+    </li>
+</ul>
+</body>
+</html>

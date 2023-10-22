@@ -19,7 +19,7 @@ public class Produit {
 	private Float prix;
 	private String photo;
 	private Long stock;
-	
+	private String categorie;
 	
 	public Long getId() {
 		return id;
@@ -57,10 +57,18 @@ public class Produit {
 	public void setStock(Long stock) {
 		this.stock = stock;
 	}
+	public String getCategorie() {
+		return categorie;
+	}
+	public void setCategorie(String categorie) {
+		this.categorie = categorie;
+	}
+	
 	@Override
 	public int hashCode() {
-		return Objects.hash(description, nom, id, photo, prix, stock);
+		return Objects.hash(categorie, description, nom, photo, prix, stock);
 	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -70,15 +78,18 @@ public class Produit {
 		if (getClass() != obj.getClass())
 			return false;
 		Produit other = (Produit) obj;
-		return Objects.equals(description, other.description) && Objects.equals(nom, other.nom)
-				&& Objects.equals(id, other.id) && Objects.equals(photo, other.photo)
+		return Objects.equals(categorie, other.categorie) && Objects.equals(description, other.description)
+				&& Objects.equals(nom, other.nom) && Objects.equals(photo, other.photo)
 				&& Objects.equals(prix, other.prix) && Objects.equals(stock, other.stock);
 	}
+	
 	@Override
 	public String toString() {
-		return "Produit [id=" + id + ", Nom=" + nom + ", Description=" + description + ", prix=" + prix + ", photo="
-				+ photo + ", stock=" + stock + "]";
+		return "Produit [nom=" + nom + ", description=" + description + ", prix=" + prix + ", photo=" + photo
+				+ ", stock=" + stock + ", categorie=" + categorie + "]";
 	}
+	
+	
 	
 	
 	
