@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<head>
+    <title>Détails du Produit</title>
+</head>
+<body>
+    <h1>Détails du Produit</h1>
+
+    <div th:if="${produit != null}">
+        <h2>Nom du Produit: <span th:text="${produit.nom}"></span></h2>
+        <p>Description: <span th:text="${produit.description}"></span></p>
+        <p>Prix: <span th:text="${produit.prix}"></span></p>
+        <p>Stock: <span th:text="${produit.stock}"></span></p>
+        <p>Catégorie: <span th:text="${produit.categorie}"></span></p>
+
+    </div>
+
+    <div th:unless="${produit != null}">
+        <p>Produit non trouvé.</p>
+    </div>
+</body>
+</html>

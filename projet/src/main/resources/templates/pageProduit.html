@@ -1,13 +1,35 @@
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Page Produits</title>
+    <title>Liste des Produits</title>
+    <style>
+        /* Style pour le conteneur de la grille */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Largeur augmentée */
+            grid-auto-rows: 300px; /* Hauteur fixe pour chaque élément */
+            grid-gap: 0; /* Supprime l'espacement entre les éléments */
+        }
+        
+        /* Style pour chaque produit (carré) */
+        .product {
+            border: 1px solid #ccc;
+            padding: 20px;
+            text-align: center;
+            background-color: #fff;
+        }
+    </style>
 </head>
 <body>
-<h1>Product Names</h1>
-<ul>
-    <li th:each="product : ${produits}">
-        <span th:text="${product.nom}"></span>
-    </li>
-</ul>
+    <h1>Liste des Produits</h1>
+    <div class="grid-container">
+        <div th:each="produit : ${produits}" class="product">
+            <h3 th:text="${produit.nom}"></h3>
+            <p>Prix : <span th:text="${produit.prix}"></span></p>
+            <p>Stock : <span th:text="${produit.stock}"></span></p>
+            <a th:href="@{'/produit/' + ${produit.nom}}">Voir les détails</a>
+
+        </div>
+    </div>
 </body>
 </html>

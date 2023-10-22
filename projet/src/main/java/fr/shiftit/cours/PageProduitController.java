@@ -1,7 +1,6 @@
 package fr.shiftit.cours;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,7 +12,6 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class PageProduitController {
-	private static final Logger logger = Logger.getLogger(PageProduitController.class.getName());
 
 	
 	@Autowired
@@ -22,20 +20,12 @@ public class PageProduitController {
 	
 	@GetMapping(path = "/pageProduit")
 	public String pageProduit(Model model, HttpSession session) {
-    	List<Produit> produits = produitRepository.findAll();
-    	
-    	for (Produit produit : produits) {
-            logger.info("Product Name: " + produit.getNom());
-        }
+	    List<Produit> produits = produitRepository.findAll();
+	    model.addAttribute("produits", produits);  
+	    return "pageProduit";
+	}
 
-    	
-    	session.setAttribute("produits", produits);
-    	
-
-        return "pageProduit";
-	
 	}
 
     
 
-}
