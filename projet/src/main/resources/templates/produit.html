@@ -10,10 +10,15 @@
         <p>Description: <span th:text="${produit.description}"></span></p>
         <p>Prix: <span th:text="${produit.prix}"></span></p>
         <p>Stock: <span th:text="${produit.stock}"></span></p>
-        <p>Catégorie: <span th:text="${produit.categorie}"></span></p>
+        
+        <form method="get" action="/pagePanier">
+        <input type="hidden" id="nom" name="nom" value="${produit.nom}">
+        <button type="submit">Ajouter au panier</button>
+        </form>
+
+
 
     </div>
-
     <div th:unless="${produit != null}">
         <p>Produit non trouvé.</p>
     </div>

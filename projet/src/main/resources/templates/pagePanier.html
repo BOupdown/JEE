@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Panier</title>
+</head>
+<body>
+    <h1>Votre Panier</h1>
+
+    <div th:if="${panier != null}">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom du Produit</th>
+                    <th>Prix</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="produit : ${panier.produits}">
+                    <td th:text="${produit.nom}"></td>
+                    <td th:text="${produit.prix}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:unless="${panier != null}">
+        <p>Votre panier est vide.</p>
+    </div>
+</body>
+</html>
