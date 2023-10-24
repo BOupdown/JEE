@@ -13,6 +13,8 @@ import jakarta.persistence.OneToOne;
 @Entity
 public class Panier {
 	
+
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
@@ -20,6 +22,7 @@ public class Panier {
 	private Integer quantite;
 	
 	@OneToOne(mappedBy = "panier")
+
 	private Utilisateur utilisateur;
 	
 	@ManyToMany(mappedBy="paniers")

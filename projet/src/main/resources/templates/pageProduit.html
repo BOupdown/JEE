@@ -21,6 +21,20 @@
     </style>
 </head>
 <body>
+	<div th:if="${session.user != null}">
+	<a href="/index">Acceuil</a>
+    <p>Bienvenue, <span th:text="${session.user.username}"></span> !</p>
+     <a href="/deconnexion">Deconnexion</a>
+     </div>
+     
+     
+     <div th:unless="${session.user != null}">
+	<a href="/index">Acceuil</a>
+    <a href="/connexion">Se connecter</a>
+</div>
+
+
+
     <h1>Liste des Produits</h1>
     <div class="grid-container">
         <div th:each="produit : ${produits}" class="product">
@@ -28,7 +42,7 @@
             <p>Prix : <span th:text="${produit.prix}"></span></p>
             <p>Stock : <span th:text="${produit.stock}"></span></p>
             <a th:href="@{'/produit/' + ${produit.nom}}">Voir les détails</a>
-
+            
         </div>
     </div>
 </body>

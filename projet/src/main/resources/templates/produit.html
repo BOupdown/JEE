@@ -1,8 +1,22 @@
 <!DOCTYPE html>
+<html>
 <head>
     <title>Détails du Produit</title>
 </head>
 <body>
+	<div th:if="${session.user != null}">
+	<a href="/index">Acceuil</a>
+	<a href="/pageProduit">Liste Produits</a>
+    <p>Bienvenue, <span th:text="${session.user.username}"></span> !</p>
+     <a href="/deconnexion">Deconnexion</a>
+	</div>
+
+<div th:unless="${session.user != null}">
+	<a href="/index">Acceuil</a>
+	<a href="/pageProduit">Liste Produits</a>
+    <a href="/connexion">Se connecter</a>
+	</div>
+
     <h1>Détails du Produit</h1>
 
     <div th:if="${produit != null}">
@@ -11,16 +25,30 @@
         <p>Prix: <span th:text="${produit.prix}"></span></p>
         <p>Stock: <span th:text="${produit.stock}"></span></p>
         
-        <form method="get" action="/pagePanier">
-        <input type="hidden" id="nom" name="nom" value="${produit.nom}">
-        <button type="submit">Ajouter au panier</button>
-        </form>
-
-
+        
+<form method="post" action="/ajouter-au-panier" th:object="${produit}">
+    <input type="hidden" name="nomProduit" th:value="*{nom}" />
+    <button type="submit">Ajouter au panier</button>
+</form>
 
     </div>
+    
+        <form action="deposer-avis" method="post">
+        <input type="hidden" name="produitId" th:value="${produit.id}" />
+        
+        <label for="description">Description de l'avis :</label>
+        <textarea id="description" name="description" rows="4" cols="50" required></textarea>
+        
+        <label for="note">Note :</label>
+        <input type="number" id="note" name="note" min="1" max="5" step="0.1" required />
+        
+        <button type="submit">Soumettre l'avis</button>
+    </form>
+
     <div th:unless="${produit != null}">
         <p>Produit non trouvé.</p>
     </div>
+    
+    
 </body>
 </html>

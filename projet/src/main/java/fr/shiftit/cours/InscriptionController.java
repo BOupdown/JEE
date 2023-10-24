@@ -16,6 +16,9 @@ public class InscriptionController {
 	@Autowired
     private UtilisateurRepository utilisateurRepository;
 	
+	@Autowired
+    private PanierRepository panierRepository;
+	
 	@GetMapping(path = "/inscription")
 	public String inscription(Model model,HttpSession session) {
 		
@@ -44,6 +47,9 @@ public class InscriptionController {
         Utilisateur utilisateur = new Utilisateur();
         utilisateur.setUsername(username);
         utilisateur.setPassword(password);
+        Panier panier = new Panier();
+        panierRepository.save(panier);
+        utilisateur.setPanier(panier);
         utilisateurRepository.save(utilisateur);
         Utilisateur existingUser2 = utilisateurRepository.findByUsername(username).orElse(null);
         System.out.println(existingUser2);

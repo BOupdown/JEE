@@ -9,8 +9,14 @@
         <p th:text="'Welcome, ' + ${session.user.username}"></p>
         <a href="deconnexion">Deconnexion</a>
         <a href="pageProduit">Page produits</a>
-
+      
     </div>
+<div th:unless="${session.user != null}">
+    <a href="/connexion">Se connecter</a>
+    <a href="/pageProduit">Page produits</a>
+</div>
+
+
 
 </body>
 </html>

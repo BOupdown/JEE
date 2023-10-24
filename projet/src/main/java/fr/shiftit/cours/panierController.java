@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 
 
 @Controller
@@ -19,45 +20,87 @@ public class panierController {
     private PanierRepository panierRepository;
 
     @Autowired
-    private ProduitRepository produitRepository; // Assuming you have a ProduitRepository
+    private ProduitRepository produitRepository; 
+    
+
+    @Autowired
+    private UtilisateurRepository utilisateurRepository; 
+
 
     @GetMapping(path = "/pagePanier")
     public String pagePanier(Model model, HttpSession session) {
-        Object user1 = session.getAttribute("user");
+        
+        if (session.getAttribute("user") == null) {
+            return "connexion";
+        }
 
-        if (user1 instanceof Utilisateur) {
-            Utilisateur utilisateur = (Utilisateur) user1;
-            Optional<Panier> panier = panierRepository.findByUtilisateur(utilisateur);
+        Utilisateur utilisateur = (Utilisateur) session.getAttribute("user");
 
-            if (panier.isPresent()) {
-                model.addAttribute("panier", panier.get());
+        if (utilisateur != null) {
+        	Optional<Utilisateur> utilisateurOptional = utilisateurRepository.findByUsername(utilisateur.getUsername());
+            Panier panier = utilisateurOptional.get().getPanier();
+
+            if (panier != null) {
+                model.addAttribute("panier", panier);
             }
         }
 
         return "pagePanier";
     }
 
-    @PostMapping(path = "/pagePanier")
-    public String addToCart(@RequestParam("nom") String nom, HttpSession session) {
-        Object user1 = session.getAttribute("user");
+    @Transactional
+    @PostMapping("/ajouter-au-panier")
+    public String ajouterAuPanier(@RequestParam("nomProduit") String nomProduit, HttpSession session, Model model) {
+        Utilisateur utilisateurBis = (Utilisateur) session.getAttribute("user");
 
-        if (user1 instanceof Utilisateur) {
-            Utilisateur utilisateur = (Utilisateur) user1;
-            Optional<Panier> panier = panierRepository.findByUtilisateur(utilisateur);
+        if (utilisateurBis != null) {
+            // Vous avez déjà l'objet Utilisateur, inutile d'accéder au champ username séparément.
 
-            if (panier.isPresent()) {
-                Panier existingPanier = panier.get();
-                // Assuming you have a Produit entity with a name field, fetch the product by name.
-                Produit produit = produitRepository.findByNom(nom).orElse(null);
+            Optional<Utilisateur> utilisateurOptional = utilisateurRepository.findByUsername(utilisateurBis.getUsername());
 
+            if (utilisateurOptional.isPresent()) {
+            	Utilisateur utilisateur = utilisateurOptional.get();
+                Produit produit = produitRepository.findByNom(nomProduit).orElse(null);
 
-                if (produit != null) {
-                    existingPanier.getProduits().add(produit);
-                    panierRepository.save(existingPanier);
+                if (produit == null) {
+                    return "redirect:/pageProduits";
                 }
-            }
-        }
 
-        return "redirect:/pagePanier";
+                Optional<Panier> panierOptionnal = panierRepository.findByUtilisateur(utilisateur);
+                Panier panier = panierOptionnal.get();
+
+                // Ajoutez le produit au panier
+                panier.getProduits().add(produit);
+
+                // Calculez le prix total du panier (vous devrez ajouter votre propre logique de calcul)
+                Float prixTotal = calculerPrixTotal(panier);
+
+                // Mettez à jour le prix total du panier
+                panier.setPrix(prixTotal);
+
+                // Enregistrez le panier en base de données (s'il est déjà enregistré dans la base)
+                panierRepository.save(panier);
+
+                model.addAttribute("panier", panier);
+                return "pagePanier";
+            } else {
+                return "redirect:/connexion"; // L'utilisateur n'est pas connecté, redirigez-le vers la page de connexion.
+            }
+        } else {
+            return "redirect:/connexion"; // L'utilisateur n'est pas connecté, redirigez-le vers la page de connexion.
+        }
     }
+
+
+    private Float calculerPrixTotal(Panier panier) {
+        Float prixTotal = 0.0f;
+        for (Produit produit : panier.getProduits()) {
+            prixTotal += produit.getPrix();
+        }
+        return prixTotal;
+    }
+
+
+ 
+
 }
