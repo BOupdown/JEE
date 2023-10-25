@@ -1,7 +1,6 @@
 package fr.shiftit.cours;
 
 import java.util.List;
-import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,11 +25,15 @@ public class Produit {
 	@ManyToMany
 	private List<Categorie> categories;
 	
-	@ManyToMany
-	private List<Panier> paniers;
 	
 	@OneToMany
 	private List<Avis> avis;
+	
+	
+	@OneToMany(mappedBy="produit")
+	private List<CommandeLigne> commandeLignes;
+	
+	
 
 	public Long getId() {
 		return id;
@@ -88,13 +91,7 @@ public class Produit {
 		this.categories = categories;
 	}
 
-	public List<Panier> getPaniers() {
-		return paniers;
-	}
 
-	public void setPaniers(List<Panier> paniers) {
-		this.paniers = paniers;
-	}
 
 	public List<Avis> getAvis() {
 		return avis;
@@ -104,34 +101,8 @@ public class Produit {
 		this.avis = avis;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(avis, categories, description, id, nom, paniers, photo, prix, stock);
-	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Produit other = (Produit) obj;
-		return Objects.equals(avis, other.avis) && Objects.equals(categories, other.categories)
-				&& Objects.equals(description, other.description) && Objects.equals(id, other.id)
-				&& Objects.equals(nom, other.nom) && Objects.equals(paniers, other.paniers)
-				&& Objects.equals(photo, other.photo) && Objects.equals(prix, other.prix)
-				&& Objects.equals(stock, other.stock);
-	}
 
-	@Override
-	public String toString() {
-		return "Produit [id=" + id + ", nom=" + nom + ", description=" + description + ", prix=" + prix + ", photo="
-				+ photo + ", stock=" + stock + ", categories=" + categories + ", paniers=" + paniers + ", avis=" + avis
-				+ "]";
-	}
-	
 	
 
 	

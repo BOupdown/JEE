@@ -11,6 +11,7 @@ public class IndexController {
 	public String index(Model model) {
 	
 		return "index";
+		//Redirection page index
 	}
 	
 	

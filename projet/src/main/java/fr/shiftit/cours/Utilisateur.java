@@ -1,14 +1,12 @@
 package fr.shiftit.cours;
 
 import java.util.List;
-import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 
 @Entity
 public class Utilisateur {
@@ -20,8 +18,9 @@ public class Utilisateur {
 	private String username;
 	private String password;
 	
-	@OneToOne
-	private Panier panier;
+	@OneToMany(mappedBy="utilisateur")
+	private List<Commande> commande;
+	
 	
 	@OneToMany
 	private List<Avis> avis;
@@ -50,14 +49,6 @@ public class Utilisateur {
 		this.password = password;
 	}
 
-	public Panier getPanier() {
-		return panier;
-	}
-
-	public void setPanier(Panier panier) {
-		this.panier = panier;
-	}
-
 	public List<Avis> getAvis() {
 		return avis;
 	}
@@ -66,29 +57,7 @@ public class Utilisateur {
 		this.avis = avis;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(avis, id, panier, password, username);
-	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Utilisateur other = (Utilisateur) obj;
-		return Objects.equals(avis, other.avis) && Objects.equals(id, other.id) && Objects.equals(panier, other.panier)
-				&& Objects.equals(password, other.password) && Objects.equals(username, other.username);
-	}
-
-	@Override
-	public String toString() {
-		return "Utilisateur [id=" + id + ", username=" + username + ", password=" + password + ", panier=" + panier
-				+ ", avis=" + avis + "]";
-	}
 	
 	
 	

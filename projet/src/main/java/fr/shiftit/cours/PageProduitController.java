@@ -20,8 +20,10 @@ public class PageProduitController {
 	
 	@GetMapping(path = "/pageProduit")
 	public String pageProduit(Model model, HttpSession session) {
+		//liste de produits
 	    List<Produit> produits = produitRepository.findAll();
 	    model.addAttribute("produits", produits);  
+	    //retourne page produit
 	    return "pageProduit";
 	}
 

@@ -16,8 +16,6 @@ public class InscriptionController {
 	@Autowired
     private UtilisateurRepository utilisateurRepository;
 	
-	@Autowired
-    private PanierRepository panierRepository;
 	
 	@GetMapping(path = "/inscription")
 	public String inscription(Model model,HttpSession session) {
@@ -35,24 +33,21 @@ public class InscriptionController {
     public String processInscription(Model model,@RequestParam String username, @RequestParam String password) {
         
         Utilisateur existingUser = utilisateurRepository.findByUsername(username).orElse(null);
+        //On récupère le user à l'aide du username
 
         if (existingUser != null) {
+        	//S'il est pas nul, problème, retourne à l'inscription
         	model.addAttribute("error", "Le nom d'utilisateur existe déjà. Veuillez en choisir un autre.");
         	return "inscription";
         } else {
        
  
     	
-    	
+    	//Nouveau utilisateur crée
         Utilisateur utilisateur = new Utilisateur();
         utilisateur.setUsername(username);
         utilisateur.setPassword(password);
-        Panier panier = new Panier();
-        panierRepository.save(panier);
-        utilisateur.setPanier(panier);
         utilisateurRepository.save(utilisateur);
-        Utilisateur existingUser2 = utilisateurRepository.findByUsername(username).orElse(null);
-        System.out.println(existingUser2);
         return "redirect:/connexion";
     }
     }
