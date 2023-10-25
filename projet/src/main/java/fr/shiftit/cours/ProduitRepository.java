@@ -10,6 +10,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProduitRepository extends JpaRepository<Produit, String> {
 
-	Optional<Produit> findByNom(String nom);
 	Optional<Produit> findById(Long id);
+	Optional<Produit> findByNom(String NompProduit);
 }
