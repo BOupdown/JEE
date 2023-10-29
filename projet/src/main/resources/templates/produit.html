@@ -2,6 +2,18 @@
 <html>
 <head>
     <title>Détails du Produit</title>
+        <style>
+        .avis-container {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+        }
+
+        .note {
+            font-weight: bold;
+            font-size: 18px;
+        }
+    </style>
 </head>
 <body>
 	<div th:if="${session.user != null}">
@@ -44,6 +56,16 @@
         
         <button type="submit">Soumettre l'avis</button>
     </form>
+    
+    <h3>Avis des utilisateurs :</h3>
+<div th:each="avis : ${avis}">
+    <div class="avis-container">
+<span th:if="${avis.utilisateur != null}" th:text="${avis.utilisateur.username}"></span>
+        <p>Description : <span th:text="${avis.description}"></span></p>
+        <p>Note : <span class="note" th:text="${avis.note + ' / 10'}"></span></p>
+    </div>
+</div>
+
 
     <div th:unless="${produit != null}">
         <p>Produit non trouvé.</p>
