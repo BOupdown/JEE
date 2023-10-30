@@ -16,6 +16,10 @@ public class InscriptionController {
 	@Autowired
     private UtilisateurRepository utilisateurRepository;
 	
+	@Autowired
+    private CommandeRepository commandeRepository ;
+
+	
 	
 	@GetMapping(path = "/inscription")
 	public String inscription(Model model,HttpSession session) {
@@ -45,8 +49,11 @@ public class InscriptionController {
     	
     	//Nouveau utilisateur crée
         Utilisateur utilisateur = new Utilisateur();
+        Commande commande = new Commande();
+        commande.setUtilisateur(utilisateur);
         utilisateur.setUsername(username);
         utilisateur.setPassword(password);
+        commandeRepository.save(commande);
         utilisateurRepository.save(utilisateur);
         return "redirect:/connexion";
     }

@@ -27,7 +27,7 @@ public class PageProduitController {
 	    return "pageProduit";
 	}
 
-	}
+}
 
     
 
