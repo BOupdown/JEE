@@ -9,6 +9,23 @@
 
 <h2>Commande Lines:</h2>
 
+<table>
+    <thead>
+        <tr>
+            <th>Produit</th>
+            <th>Quantité</th>
+            <!-- Add more table headers as needed -->
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Iterate over the list of commandeLines -->
+        <tr th:each="commandeLine : ${commandeLignes}">
+            <td th:text="${commandeLine.produit.nom}"></td>
+            <td th:text="${commandeLine.qte}"></td>
+            <!-- Add more table cells for other details -->
+        </tr>
+    </tbody>
+</table>
 
 <!-- Your remaining HTML code -->
 <!-- ... -->

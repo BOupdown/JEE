@@ -4,6 +4,7 @@ package fr.shiftit.cours;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
 
+@Controller
 public class CommandeController {
 	
 	@Autowired
@@ -38,11 +40,11 @@ public class CommandeController {
 			
 	        model.addAttribute("commandeLignes", commandeLignes);
 	        
-	        return "addPanier";
+	        return "pageCommande";
 		}
 
         
-		return "produit";
+		return "redirect:/connexion";
 
 
         
@@ -50,7 +52,7 @@ public class CommandeController {
 	
 	@PostMapping("/addCommande")
     public String ajouterAuPanier(@RequestParam("produitId") Long produitId,
-    		@RequestParam("nbExemplares") Long nbExemplares,
+    		@RequestParam("nbExemplaires") Long nbExemplaires,
     		HttpSession session, Model model) {
     	
         Utilisateur utilisateur = (Utilisateur) session.getAttribute("user");
@@ -58,7 +60,7 @@ public class CommandeController {
         
         if (utilisateur == null) {
         	
-        	return"redirect:/index";
+        	return"redirect:/connexion";
         	
         } else {
 
@@ -66,14 +68,14 @@ public class CommandeController {
 		Commande commande = commandeRepository.findByUtilisateur(utilisateur);
         CommandeLigne commandeLigne = new CommandeLigne();
         
-        commandeLigne.setQte(nbExemplares);
+        commandeLigne.setQte(nbExemplaires);
         commandeLigne.setCommande(commande);
         commandeLigne.setProduit(produit);
         
         commandeLineRepository.save(commandeLigne);
     
 
-      return "addPanier";
+      return "redirect:/pageCommande";
     }
 }
 
