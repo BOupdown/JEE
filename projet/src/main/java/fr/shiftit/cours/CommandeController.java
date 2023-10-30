@@ -26,7 +26,7 @@ public class CommandeController {
     private ProduitRepository produitRepository ;
 	
 
-	@GetMapping("/addCommande")
+	@GetMapping("/Panier")
     public String getCommande(Model model, HttpSession session) {
 
 
@@ -40,7 +40,7 @@ public class CommandeController {
 			
 	        model.addAttribute("commandeLignes", commandeLignes);
 	        
-	        return "pageCommande";
+	        return "Panier";
 		}
 
         
@@ -75,7 +75,7 @@ public class CommandeController {
         commandeLineRepository.save(commandeLigne);
     
 
-      return "redirect:/pageCommande";
+      return "redirect:/Panier";
     }
 }
 
