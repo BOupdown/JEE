@@ -2,6 +2,7 @@ package fr.shiftit.cours;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,6 +39,8 @@ public class CommandeController {
 			Commande commande = commandeRepository.findByUtilisateur(user);
 			List<CommandeLigne> commandeLignes = commandeLineRepository.findByCommande(commande);
 			
+	        model.addAttribute("commande", commande);
+
 	        model.addAttribute("commandeLignes", commandeLignes);
 	        
 	        return "Panier";
@@ -78,5 +81,96 @@ public class CommandeController {
       return "redirect:/Panier";
     }
 }
+	
+	@PostMapping("/suppligneCommande")
+	public String supprimerLignePanier(@RequestParam("commandeLineId") Long commandeLineId,
+	                               HttpSession session, Model model) {
+
+	    Utilisateur utilisateur = (Utilisateur) session.getAttribute("user");
+
+	    if (utilisateur == null) {
+	        return "redirect:/connexion";
+	        
+	    } else {
+	    	
+	    	Optional<CommandeLigne> ligneDeCommande = commandeLineRepository.findById(commandeLineId);
+	    	
+	    	if (ligneDeCommande.isPresent()) {
+	            commandeLineRepository.delete(ligneDeCommande.get()); // Delete the found command line
+	    	}
+
+	          
+
+	        return "redirect:/Panier";
+	    }
+	}
+	
+	@PostMapping("/achatPanier")
+	public String acheterPanier(@RequestParam("commandeId") Long commandeId,
+	                           HttpSession session, Model model) {
+
+	    Utilisateur utilisateur = (Utilisateur) session.getAttribute("user");
+
+	    if (utilisateur == null) {
+	        return "redirect:/connexion";
+	        
+	    } else {
+	        Optional<Commande> commande = commandeRepository.findById(commandeId);
+
+	        if (commande.isPresent()) {
+	            Commande maCommande = commande.get();
+
+	            List<CommandeLigne> commandesLignes = maCommande.getCommandeLignes();
+
+	            for (CommandeLigne commandeLigne : commandesLignes) {
+	                Produit produit = commandeLigne.getProduit();
+	                Long quantite = commandeLigne.getQte();
+
+	                // Update the stock
+	                Long currentStock = produit.getStock();
+	                if (currentStock >= quantite) {
+	                    produit.setStock(currentStock - quantite);
+	                    produitRepository.save(produit);
+	                } 
+
+	                // Remove the CommandeLigne
+	                commandeLineRepository.delete(commandeLigne);
+	            }
+	        }
+
+	        return "redirect:/Panier";
+	    }
+	}
+	
+	@PostMapping("/suppPanier")
+	public String supprimerLePanier(@RequestParam("commandeId") Long commandeId,
+	                           HttpSession session, Model model) {
+
+	    Utilisateur utilisateur = (Utilisateur) session.getAttribute("user");
+
+	    if (utilisateur == null) {
+	        return "redirect:/connexion";
+	        
+	    } else {
+	        Optional<Commande> commande = commandeRepository.findById(commandeId);
+
+	        if (commande.isPresent()) {
+	            Commande maCommande = commande.get();
+
+	            List<CommandeLigne> commandesLignes = maCommande.getCommandeLignes();
+
+	            for (CommandeLigne commandeLigne : commandesLignes) {
+
+	                commandeLineRepository.delete(commandeLigne);
+	            }
+	        }
+
+	        return "redirect:/Panier";
+	    }
+	}
+
+
+
+
 
 }

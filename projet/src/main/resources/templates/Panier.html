@@ -1,11 +1,10 @@
+<!DOCTYPE html>
 <html>
 <head>
     <title>Page de Commande</title>
-    <!-- Inclure les feuilles de style ou autres ressources -->
+    <!-- Include stylesheets or other resources -->
 </head>
 <body>
-<!-- Your existing HTML code -->
-<!-- ... -->
 
 <h2>Commande Lines:</h2>
 
@@ -14,21 +13,42 @@
         <tr>
             <th>Produit</th>
             <th>Quantité</th>
-            <!-- Add more table headers as needed -->
+            <th>Supprimer article</th>
         </tr>
     </thead>
-    <tbody>
-        <!-- Iterate over the list of commandeLines -->
-        <tr th:each="commandeLine : ${commandeLignes}">
-            <td th:text="${commandeLine.produit.nom}"></td>
-            <td th:text="${commandeLine.qte}"></td>
-            <!-- Add more table cells for other details -->
-        </tr>
-    </tbody>
+<tbody>
+    <!-- Iterate over the list of commandeLines -->
+    <tr th:each="commandeLine : ${commandeLignes}">
+        <td th:text="${commandeLine.produit.nom}"></td>
+        <td th:text="${commandeLine.qte}"></td>
+        <td>
+            <form method="post" action="/suppligneCommande">
+                <!-- Adjusted the ID and name to match -->
+                <input type="hidden" name="commandeLineId" th:value="${commandeLine.id}" />
+                <button type="submit">X</button>
+            </form>
+        </td>
+    </tr>
+</tbody>
 </table>
 
-<!-- Your remaining HTML code -->
-<!-- ... -->
+            <form method="post" action="/achatPanier">
+                <!-- Adjusted the ID and name to match -->
+                <input type="hidden" id="commandeId" name="commandeId" th:value="${commande.id}" />
+                <button type="submit">Passer la commande</button>
+            </form>
+            
+            <br>
+            
+            <form method="post" action="/suppPanier">
+            <!-- Adjusted the ID and name to match -->
+            <input type="hidden" id="commandeId" name="commandeId" th:value="${commande.id}" />
+            <button type="submit">Supprimer le panier</button>
+            </form>
+
+
+
+<!-- Other HTML code -->
 
 </body>
 </html>
