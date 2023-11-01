@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Page de Commande</title>
+    <title>Panier</title>
     <!-- Include stylesheets or other resources -->
 </head>
 <body>
+	<a href="/index">Acceuil</a>
+	<a href="/pageProduit">Liste Produits</a>
+    <p>Bienvenue, <span th:text="${session.user.username}"></span> !</p>
+    <a href="/deconnexion">Deconnexion</a>
 
-<h2>Commande Lines:</h2>
+<h2>Panier</h2>
 
 <table>
     <thead>

@@ -53,6 +53,7 @@ public class InscriptionController {
         commande.setUtilisateur(utilisateur);
         utilisateur.setUsername(username);
         utilisateur.setPassword(password);
+        utilisateur.setAdmin(false);
         commandeRepository.save(commande);
         utilisateurRepository.save(utilisateur);
         return "redirect:/connexion";

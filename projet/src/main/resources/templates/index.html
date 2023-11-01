@@ -9,7 +9,8 @@
         <p th:text="'Welcome, ' + ${session.user.username}"></p>
         <a href="deconnexion">Deconnexion</a>
         <a href="pageProduit">Page produits</a>
-        
+<a href="Administrateur" th:if="${session.user.admin == true}">Administrateur</a>
+
       
     </div>
 <div th:unless="${session.user != null}">

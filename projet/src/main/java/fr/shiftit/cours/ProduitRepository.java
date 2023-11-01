@@ -12,4 +12,5 @@ public interface ProduitRepository extends JpaRepository<Produit, String> {
 
 	Optional<Produit> findById(Long id);
 	Optional<Produit> findByNom(String NompProduit);
+    void deleteById(Long id);
 }
