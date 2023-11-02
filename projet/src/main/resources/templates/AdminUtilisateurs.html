@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<head>
+    <title>Produits</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+	
+    <h1>Administrateur</h1>
+
+    <div>
+        <p th:text="'Welcome, ' + ${session.user.username}"></p>
+        <a href="/index">Acceuil</a>
+        <a href="/deconnexion">Deconnexion</a>
+        <a href="/pageProduit">Page produits</a>
+    </div>
+   
+    
+    <h2>Ajouter un Utilisateur</h2>
+    
+    <div>
+		
+		
+<form action="/Administrateur/ajouter-utilisateur" method="post">
+    <label for="username">Nom d'utilisateur :</label>
+    <input type="text" id="username" name="username" required>
+    
+    <label for="password">Mot de passe :</label>
+    <input type="text" id="password" name="password" step="0.01" required>
+    
+    <label for="admin">Admin :</label>
+    <input type="radio" id="admin" name="admin" value="true"> Oui
+    <input type="radio" id="admin" name="admin" value="false" checked> Non
+    
+    <button type="submit">Ajouter l'utilisateur</button>
+</form>
+
+
+</div>
+
+   <div th:if="${ErreurAjout}">
+    	<p th:text="${ErreurAjout}"></p>
+		</div>
+
+
+    <h2>Utilisateur</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nom d'utilisateur</th>
+                <th>Mot de passe</th>
+                <th>Admin</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="utilisateur : ${utilisateurs}">
+                <td th:text="${utilisateur.username}">Nom d'utilisateur</td>
+                <td th:text="${utilisateur.password}">Mot de passe</td>
+                <td th:text="${utilisateur.admin}">Admin</td>
+             	<td>
+				<form th:action="@{/Administrateur/modifier-utilisateur/{utilisateurId}(utilisateurId=${utilisateur.id})}" method="get">
+   				<button type="submit">Modifier</button>
+				</form>
+				<form action="/Administrateur/supprimer-utilisateur" method="post">
+    			<input type="hidden" name="utilisateurId" th:value="${utilisateur.id}" />
+    			<button type="submit">Supprimer</butto>
+				</form>
+
+
+				</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

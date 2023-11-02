@@ -24,7 +24,7 @@ public class AdminProduitController {
 	
 	
 	@GetMapping(path = "/Produits")
-	public String pageAdmin(Model model, HttpSession session) {
+	public String pageAdminProduit(Model model, HttpSession session) {
 		
 		if(session.getAttribute("user") != null) {
 			//On vérifie si l'attibut user est non null
