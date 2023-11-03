@@ -22,6 +22,7 @@ public class Produit {
 	private String photo;
 	private Long stock;
 	
+	
 	@ManyToMany
 	private List<Categorie> categories;
 	

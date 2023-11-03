@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 
 
 
@@ -32,19 +33,36 @@ public class ProduitController {
 
     @GetMapping("/{NomProduit}")
     public String getProduit(@PathVariable String NomProduit, Model model) {
-
         Produit produit = produitRepository.findByNom(NomProduit).orElse(null);
 
-        
         List<Avis> avis = avisRepository.findByProduit(produit);
-        
-        
-        model.addAttribute("produit",produit);
-        model.addAttribute("avis",avis);
 
+        Double noteMoyenne = calculerNoteMoyenne(avis);
+
+        model.addAttribute("produit", produit);
+        model.addAttribute("avis", avis);
+        model.addAttribute("noteMoyenne", noteMoyenne);
 
         return "produit";
     }
+    
+    
+    
+    
+    private Double calculerNoteMoyenne(List<Avis> avis) {
+        if (avis == null || avis.isEmpty()) {
+            return 0.0;
+        }
+
+        double sommeDesNotes = 0.0;
+        for (Avis avisItem : avis) {
+            sommeDesNotes += avisItem.getNote();
+        }
+
+        return sommeDesNotes / avis.size();
+    }
+    
+    
     
 
         @PostMapping("/deposer-avis")
@@ -76,6 +94,35 @@ public class ProduitController {
 
           return "redirect:/produit/" + produit.getNom();
         }
+            
+            
 }
+        
+        @Transactional
+    	@PostMapping("/supprimer-avis")
+    	public String supprimerAvis(HttpSession session,@RequestParam Long avisId,@RequestParam Long produitId) {
+    			
+        	if(session.getAttribute("user") != null) {
+    			//On vérifie si l'attibut user est non null
+    			
+    			Utilisateur user = (Utilisateur) session.getAttribute("user");
+    			
+    			if(user.getAdmin()) {
+    				
+    	            Produit produit = produitRepository.findById(produitId).orElse(null);
+    				avisRepository.deleteById(avisId);
+    		          return "redirect:/produit/" + produit.getNom();
+    			}else {
+    				
+    				return "redirect:/index";
+    				
+    			}
+    		}
+
+            
+    		return "redirect:/connexion";
+
+
+    	}
     
 }

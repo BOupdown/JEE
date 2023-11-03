@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<head>
+    <title>Modifier</title>
+  
+</head>
+<body>
+
+<h1>Modifier identifiants</h1>
+
+		
+<form action="/modifier-utilisateur" method="post">
+    <label for="username">Nom d'utilisateur :</label>
+    <input type="text" id="username" name="username" th:value="${session.user.username}" required>
+    
+    <label for="password">Mot de passe :</label>
+    <input type="password" id="password" name="password" step="0.01" th:value="${session.user.password}" required>
+    
+    <button type="submit">Modifier l'utilisateur</button>
+</form>
+
+   <div th:if="${ErreurModif}">
+    	<p th:text="${ErreurModif}"></p>
+		</div>
+
+    
+</body>
+</html>

@@ -22,8 +22,16 @@ public class CommandeLigne {
 	
 	@ManyToOne
 	private Commande commande;
-
 	
+    private int position;
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
 	
 	public Long getId() {
 		return id;

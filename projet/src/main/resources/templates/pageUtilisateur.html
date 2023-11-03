@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	   <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <title>Mon compte</title>
+</head>
+<body>
+    <div>
+        <a href="/index">Accueil</a>
+        <a href="/pageProduit">Page produits</a>
+        <a href="/Administrateur" th:if="${session.user.admin == true}">Administrateur</a>
+        <a href="/deconnexion">Déconnexion</a>
+
+    </div>
+    
+    <h1>Mon compte</h1>
+
+    <h2>Identifiants</h2>
+    <table>
+        <tr>
+            <th>Nom d'utilisateur:</th>
+            <td th:text="${session.user.username}"></td>
+        </tr>
+        <tr>
+            <th>Mot de passe:</th>
+            <td th:text="${session.user.password}"></td>
+        </tr>
+        <tr>
+            <th>Actions:</th>
+            <td>
+                <form action="/modifier-utilisateur" method="get">
+                    <button type="submit">Modifier</button>
+                </form>
+                  <form action="/supprimer-utilisateur" method="post">
+        <button type="submit">Supprimer</button>
+    </form>
+            </td>
+        </tr>
+    </table>
+      
+      
+    
+    
+    <h2>Commandes</h2>
+
+    <table>
+        <thead>
+            <tr>
+				<th>N° de commande</th>
+                <th>Produits</th>
+            </tr>
+        </thead>
+        <tbody>
+	
+
+				 <tr th:each="commande : ${commandes}">
+				   <td th:text="${commande.id}">id de la commande</td>
+                <td>
+                    <ul>
+                        <li th:each="ligneCommande : ${commande.commandeLignes}">
+                            <span th:text="${ligneCommande.produit.nom}"></span>
+                            <span>(<span th:text="${ligneCommande.qte}"></span> exemplaires)</span>
+                        </li>
+                    </ul>
+                </td>
+                
+
+        </tbody>
+    </table>
+    
+    
+    
+    
+</body>
+</html>

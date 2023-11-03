@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Commandes</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+	    <div>
+		<a href="/index">Accueil</a>
+		<a href="/pageProduit">Page produits</a>
+		<a href="/Administrateur" th:if="${session.user.admin == true}">Administrateur</a>
+		<a href="Panier">Panier</a>
+		<div>
+<p>Welcome, <a th:href="@{/Utilisateur}" th:text="${session.user.username}"></a></p>
+
+        <a href="deconnexion">Deconnexion</a>
+        </div>
+    </div>
+   
+    <h1>Administrateur</h1>
+
+
+    <h2>Commandes</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nom d'utilisateur</th>
+                <th>Produits</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="commande : ${commandes}">
+                <td th:text="${commande.utilisateur.username}">Nom d'utilisateur</td>
+                
+                <td>
+                    <ul>
+                        <li th:each="ligneCommande : ${commande.commandeLignes}">
+                            <span th:text="${ligneCommande.produit.nom}"></span>
+                            <span>(<span th:text="${ligneCommande.qte}"></span> exemplaires)</span>
+                        </li>
+                    </ul>
+                </td>
+                
+                <td>
+                    <form action="/Administrateur/supprimer-commande" method="post">
+                        <input type="hidden" name="commandeId" th:value="${commande.id}" />
+                        <button type="submit">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

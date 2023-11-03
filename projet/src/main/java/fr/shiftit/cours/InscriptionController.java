@@ -16,8 +16,6 @@ public class InscriptionController {
 	@Autowired
     private UtilisateurRepository utilisateurRepository;
 	
-	@Autowired
-    private CommandeRepository commandeRepository ;
 
 	
 	
@@ -49,12 +47,9 @@ public class InscriptionController {
     	
     	//Nouveau utilisateur crée
         Utilisateur utilisateur = new Utilisateur();
-        Commande commande = new Commande();
-        commande.setUtilisateur(utilisateur);
         utilisateur.setUsername(username);
         utilisateur.setPassword(password);
         utilisateur.setAdmin(false);
-        commandeRepository.save(commande);
         utilisateurRepository.save(utilisateur);
         return "redirect:/connexion";
     }

@@ -8,5 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface AvisRepository extends JpaRepository<Avis, String> {
 	
 	List<Avis> findByProduit(Produit produit);
+    void deleteById(Long id);
 }
 

@@ -2,13 +2,18 @@
 <html>
 <head>
     <title>Panier</title>
-    <!-- Include stylesheets or other resources -->
+
 </head>
 <body>
 	<a href="/index">Acceuil</a>
 	<a href="/pageProduit">Liste Produits</a>
-    <p>Bienvenue, <span th:text="${session.user.username}"></span> !</p>
-    <a href="/deconnexion">Deconnexion</a>
+    <a href="/Administrateur" th:if="${session.user.admin == true}">Administrateur</a>
+    
+    		<div>
+<p>Welcome, <a th:href="@{/Utilisateur}" th:text="${session.user.username}"></a></p>
+
+        <a href="deconnexion">Deconnexion</a>
+        </div>
 
 <h2>Panier</h2>
 
@@ -21,14 +26,14 @@
         </tr>
     </thead>
 <tbody>
-    <!-- Iterate over the list of commandeLines -->
+
     <tr th:each="commandeLine : ${commandeLignes}">
         <td th:text="${commandeLine.produit.nom}"></td>
         <td th:text="${commandeLine.qte}"></td>
         <td>
-            <form method="post" action="/suppligneCommande">
-                <!-- Adjusted the ID and name to match -->
-                <input type="hidden" name="commandeLineId" th:value="${commandeLine.id}" />
+            <form method="post" action="/supplignePanier">
+
+                <input type="hidden" name="commandeLinePosition" th:value="${commandeLine.position}" />
                 <button type="submit">X</button>
             </form>
         </td>
@@ -36,23 +41,19 @@
 </tbody>
 </table>
 
-            <form method="post" action="/achatPanier">
-                <!-- Adjusted the ID and name to match -->
-                <input type="hidden" id="commandeId" name="commandeId" th:value="${commande.id}" />
+            <form method="post" action="/Commander">
                 <button type="submit">Passer la commande</button>
             </form>
             
             <br>
             
             <form method="post" action="/suppPanier">
-            <!-- Adjusted the ID and name to match -->
-            <input type="hidden" id="commandeId" name="commandeId" th:value="${commande.id}" />
             <button type="submit">Supprimer le panier</button>
             </form>
 
 
 
-<!-- Other HTML code -->
+
 
 </body>
 </html>

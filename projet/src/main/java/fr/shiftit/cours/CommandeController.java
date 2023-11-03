@@ -1,8 +1,10 @@
 package fr.shiftit.cours;
 
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,125 +28,148 @@ public class CommandeController {
 	@Autowired
     private ProduitRepository produitRepository ;
 	
+	@Autowired
+    private UtilisateurRepository utilisateurRepository ;
+	
 
 	@GetMapping("/Panier")
-    public String getCommande(Model model, HttpSession session) {
+	public String getCommande(Model model, HttpSession session) {
+	    if (session.getAttribute("user") != null) {
 
-
-		if(session.getAttribute("user") != null) {
-			//On vérifie si l'attibut user est non null
-			
-			Utilisateur user = (Utilisateur) session.getAttribute("user");
-
-			Commande commande = commandeRepository.findByUtilisateur(user);
-			List<CommandeLigne> commandeLignes = commandeLineRepository.findByCommande(commande);
-			
-	        model.addAttribute("commande", commande);
+	        List<CommandeLigne> commandeLignes = (List<CommandeLigne>) session.getAttribute("commandeLignes");
 
 	        model.addAttribute("commandeLignes", commandeLignes);
-	        
+
 	        return "Panier";
-		}
+	    }
 
-        
-		return "redirect:/connexion";
+	    return "redirect:/connexion";
+	}
 
-
-        
-    }
 	
-	@PostMapping("/addCommande")
-    public String ajouterAuPanier(@RequestParam("produitId") Long produitId,
-    		@RequestParam("nbExemplaires") Long nbExemplaires,
-    		HttpSession session, Model model) {
-    	
-        Utilisateur utilisateur = (Utilisateur) session.getAttribute("user");
-        
-        
-        if (utilisateur == null) {
-        	
-        	return"redirect:/connexion";
-        	
-        } else {
-
-        Produit produit = produitRepository.findById(produitId).orElse(null);
-		Commande commande = commandeRepository.findByUtilisateur(utilisateur);
-        CommandeLigne commandeLigne = new CommandeLigne();
-        
-        commandeLigne.setQte(nbExemplaires);
-        commandeLigne.setCommande(commande);
-        commandeLigne.setProduit(produit);
-        
-        commandeLineRepository.save(commandeLigne);
-    
-
-      return "redirect:/Panier";
-    }
-}
-	
-	@PostMapping("/suppligneCommande")
-	public String supprimerLignePanier(@RequestParam("commandeLineId") Long commandeLineId,
-	                               HttpSession session, Model model) {
+	@PostMapping("/addPanier")
+	public String ajouterAuPanier(@RequestParam("produitId") Long produitId,
+	        @RequestParam("nbExemplaires") Long nbExemplaires,
+	        HttpSession session, Model model) {
 
 	    Utilisateur utilisateur = (Utilisateur) session.getAttribute("user");
 
 	    if (utilisateur == null) {
 	        return "redirect:/connexion";
-	        
 	    } else {
-	    	
-	    	Optional<CommandeLigne> ligneDeCommande = commandeLineRepository.findById(commandeLineId);
-	    	
-	    	if (ligneDeCommande.isPresent()) {
-	            commandeLineRepository.delete(ligneDeCommande.get()); // Delete the found command line
-	    	}
+	        Produit produit = produitRepository.findById(produitId).orElse(null);
+	        
+	        List<CommandeLigne> commandeLignes = (List<CommandeLigne>) session.getAttribute("commandeLignes");
+	        
+	        if (commandeLignes == null) {
+	            commandeLignes = new ArrayList<>();
+	        }
 
-	          
+
+	        boolean produitExisteDansPanier = false;
+	        for (CommandeLigne commandeLigne : commandeLignes) {
+	            if (commandeLigne.getProduit().getId().equals(produitId)) {
+
+	                Long nouvelleQuantite = commandeLigne.getQte() + nbExemplaires;
+	                commandeLigne.setQte(nouvelleQuantite);
+	                produitExisteDansPanier = true;
+	                break;
+	            }
+	        }
+
+	        if (!produitExisteDansPanier) {
+
+	            CommandeLigne nouvelleCommandeLigne = new CommandeLigne();
+	            nouvelleCommandeLigne.setQte(nbExemplaires);
+	            nouvelleCommandeLigne.setProduit(produit);
+
+
+	            nouvelleCommandeLigne.setPosition(commandeLignes.size() + 1);
+
+	            commandeLignes.add(nouvelleCommandeLigne);
+	        }
+
+	        session.setAttribute("commandeLignes", commandeLignes);
 
 	        return "redirect:/Panier";
 	    }
 	}
-	
-	@PostMapping("/achatPanier")
-	public String acheterPanier(@RequestParam("commandeId") Long commandeId,
-	                           HttpSession session, Model model) {
+
+
+	@PostMapping("/supplignePanier")
+	public String supprimerLignePanier(@RequestParam("commandeLinePosition") int commandeLinePosition,
+	                                   HttpSession session, Model model) {
 
 	    Utilisateur utilisateur = (Utilisateur) session.getAttribute("user");
 
 	    if (utilisateur == null) {
 	        return "redirect:/connexion";
-	        
 	    } else {
-	        Optional<Commande> commande = commandeRepository.findById(commandeId);
 
-	        if (commande.isPresent()) {
-	            Commande maCommande = commande.get();
+	        List<CommandeLigne> commandeLignes = (List<CommandeLigne>) session.getAttribute("commandeLignes");
 
-	            List<CommandeLigne> commandesLignes = maCommande.getCommandeLignes();
+	        if (commandeLignes != null) {
+	            Iterator<CommandeLigne> iterator = commandeLignes.iterator();
+	            while (iterator.hasNext()) {
+	                CommandeLigne ligneDeCommande = iterator.next();
+	                if (ligneDeCommande.getPosition() == commandeLinePosition) {
+	                    iterator.remove(); 
+	                    break;
+	                }
+	            }
 
-	            for (CommandeLigne commandeLigne : commandesLignes) {
+	            session.setAttribute("commandeLignes", commandeLignes);
+	        }
+
+	        return "redirect:/Panier";
+	    }
+	}
+
+	@PostMapping("/Commander")
+	public String commander(HttpSession session, Model model) {
+	    Utilisateur utilisateur1 = (Utilisateur) session.getAttribute("user");
+	    Utilisateur utilisateur = utilisateurRepository.findById(utilisateur1.getId()).orElse(null);
+	    if (utilisateur == null) {
+	        return "redirect:/connexion";
+	    } else {
+	        Commande nouvelleCommande = new Commande();
+	        nouvelleCommande.setUtilisateur(utilisateur);
+
+	        List<CommandeLigne> commandeLignes = (List<CommandeLigne>) session.getAttribute("commandeLignes");
+
+	        if (commandeLignes != null && !commandeLignes.isEmpty()) {
+	            commandeRepository.save(nouvelleCommande);
+
+	            for (CommandeLigne commandeLigne : commandeLignes) {
 	                Produit produit = commandeLigne.getProduit();
 	                Long quantite = commandeLigne.getQte();
 
-	                // Update the stock
 	                Long currentStock = produit.getStock();
 	                if (currentStock >= quantite) {
+
+	                    CommandeLigne nouvelleCommandeLigne = new CommandeLigne();
+	                    nouvelleCommandeLigne.setQte(quantite);
+	                    nouvelleCommandeLigne.setProduit(produit);
+	                    nouvelleCommandeLigne.setCommande(nouvelleCommande);
+	                    commandeLineRepository.save(nouvelleCommandeLigne);
+
+
 	                    produit.setStock(currentStock - quantite);
 	                    produitRepository.save(produit);
-	                } 
-
-	                // Remove the CommandeLigne
-	                commandeLineRepository.delete(commandeLigne);
+	                }
 	            }
+
+	            session.setAttribute("commandeLignes", new ArrayList<CommandeLigne>());
 	        }
 
 	        return "redirect:/Panier";
 	    }
 	}
-	
+
+
+
 	@PostMapping("/suppPanier")
-	public String supprimerLePanier(@RequestParam("commandeId") Long commandeId,
-	                           HttpSession session, Model model) {
+	public String supprimerLePanier(HttpSession session, Model model) {
 
 	    Utilisateur utilisateur = (Utilisateur) session.getAttribute("user");
 
@@ -152,18 +177,9 @@ public class CommandeController {
 	        return "redirect:/connexion";
 	        
 	    } else {
-	        Optional<Commande> commande = commandeRepository.findById(commandeId);
+	        
 
-	        if (commande.isPresent()) {
-	            Commande maCommande = commande.get();
-
-	            List<CommandeLigne> commandesLignes = maCommande.getCommandeLignes();
-
-	            for (CommandeLigne commandeLigne : commandesLignes) {
-
-	                commandeLineRepository.delete(commandeLigne);
-	            }
-	        }
+	        session.setAttribute("commandeLignes", new ArrayList<CommandeLigne>());
 
 	        return "redirect:/Panier";
 	    }

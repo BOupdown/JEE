@@ -3,23 +3,24 @@
     <title>Administrateur</title>
 </head>
 <body>
-    <h1>Administrateur</h1>
-
     <div>
-        <p th:text="'Welcome, ' + ${session.user.username}"></p>
         <a href="/index">Acceuil</a>
-        <a href="/deconnexion">Deconnexion</a>
         <a href="/pageProduit">Page produits</a>
+        <a href="/Panier">Panier</a>
+        <div>
+		<p>Welcome, <a th:href="@{/Utilisateur}" th:text="${session.user.username}"></a></p>
+        <a href="deconnexion">Deconnexion</a>
+        </div>
+        
+        </div>
+        
+            <h1>Administrateur</h1>
 
-      
-
-    
-    
     
     <div>
 		<a href="/Administrateur/Produits">Produits</a>
 		<a href="/Administrateur/Utilisateurs">Utilisateurs</a>
-		
+		<a href="/Administrateur/Commandes">Commandes</a>
 	</div>
 
 

@@ -6,11 +6,18 @@
     <h1>Welcome to the Home Page</h1>
 
     <div th:if="${session.user != null}">
-        <p th:text="'Welcome, ' + ${session.user.username}"></p>
-        <a href="deconnexion">Deconnexion</a>
+	
+	<div>
         <a href="pageProduit">Page produits</a>
-<a href="Administrateur" th:if="${session.user.admin == true}">Administrateur</a>
+		<a href="Administrateur" th:if="${session.user.admin == true}">Administrateur</a>
+		<a href="Panier">Panier</a>
+		</div>
+		
+		<div>
+<p>Welcome, <a th:href="@{/Utilisateur}" th:text="${session.user.username}"></a></p>
 
+        <a href="deconnexion">Deconnexion</a>
+        </div>
       
     </div>
 <div th:unless="${session.user != null}">
