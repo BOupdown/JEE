@@ -5,14 +5,14 @@
 
 </head>
 <body>
-	<a href="/index">Acceuil</a>
+	<a href="/index">Accueil</a>
 	<a href="/pageProduit">Liste Produits</a>
     <a href="/Administrateur" th:if="${session.user.admin == true}">Administrateur</a>
     
     		<div>
 <p>Welcome, <a th:href="@{/Utilisateur}" th:text="${session.user.username}"></a></p>
 
-        <a href="deconnexion">Deconnexion</a>
+        <a href="/deconnexion">Deconnexion</a>
         </div>
 
 <h2>Panier</h2>
