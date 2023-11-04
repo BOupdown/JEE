@@ -1,32 +1,69 @@
+<!DOCTYPE html>
 <html>
 <head>
     <title>Home Page</title>
+    <style>
+        body {
+            background-color: #f5f5f5; /* Blanc */
+            color: #4d2600; /* Marron */
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background-color: #4d2600; /* Marron */
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 15px 0;
+            margin: 0; /* Modification */
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: #f5f5f5; /* Blanc */
+            margin: 0 10px;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+        .welcome-message {
+            margin-top: 20px; /* Ajustement de la marge */
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to the Home Page</h1>
-
-    <div th:if="${session.user != null}">
-	
-	<div>
-        <a href="pageProduit">Page produits</a>
-		<a href="Administrateur" th:if="${session.user.admin == true}">Administrateur</a>
-		<a href="Panier">Panier</a>
-		</div>
-		
-		<div>
-<p>Welcome, <a th:href="@{/Utilisateur}" th:text="${session.user.username}"></a></p>
-
-        <a href="deconnexion">Deconnexion</a>
-        </div>
-      
+    <div class="navbar">
+        <!-- Lien de la page produit avec la condition pour afficher uniquement s'il y a une session utilisateur -->
+        <a th:if="${session.user != null}" href="/pageProduit">Page produits</a>
+        <a href="Administrateur" th:if="${session.user != null && session.user.admin == true}">Administrateur</a>
+        <a href="/Panier">Panier</a>
+        <a href="/deconnexion" th:if="${session.user != null}">Deconnexion</a>
+        <a href="/connexion" th:unless="${session.user != null}">Se connecter</a>
     </div>
-<div th:unless="${session.user != null}">
-    <a href="/connexion">Se connecter</a>
-    <a href="/pageProduit">Page produits</a>
-</div>
 
+    <div class="container">
+        <div class="welcome-message">
+			<br>
+			<br><br><br>
+			<br><br><br>
+			<br>
+            <h1>Welcome to the Home Page</h1>
 
-
+            <div th:if="${session.user != null}">
+                <p>Welcome, <a th:href="@{/Utilisateur}" th:text="${session.user.username}"></a></p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
-

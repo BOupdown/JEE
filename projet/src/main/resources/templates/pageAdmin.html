@@ -1,30 +1,76 @@
+<!DOCTYPE html>
 <html>
 <head>
     <title>Administrateur</title>
+    <style>
+        /* Styles pour le navbar */
+        .navbar {
+            background-color: #4d2600; /* Marron */
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: #f5f5f5; /* Blanc */
+            margin: 0 10px;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+        /* Styles pour les liens "Produits", "Utilisateurs" et "Commandes" */
+        h1 {
+            text-align: center;
+            color: #4d2600;
+            text-decoration: underline;
+        }
+
+        div.button-links {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 30px;
+        }
+
+        div.button-links a {
+            text-decoration: none;
+            margin: 10px;
+            padding: 10px 20px;
+            color: #fff;
+            background-color: #4d2600;
+            border: 1px solid #4d2600;
+            border-radius: 5px;
+            display: block;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        div.button-links a:hover {
+            background-color: #753b00;
+            border: 1px solid #753b00;
+        }
+    </style>
 </head>
 <body>
-    <div>
+    <div class="navbar">
         <a href="/index">Accueil</a>
         <a href="/pageProduit">Page produits</a>
+        <a href="/Administrateur">Administrateur</a>
         <a href="/Panier">Panier</a>
-        <div>
-		<p>Welcome, <a th:href="@{/Utilisateur}" th:text="${session.user.username}"></a></p>
         <a href="/deconnexion">Deconnexion</a>
-        </div>
-        
-        </div>
-        
-            <h1>Administrateur</h1>
-
-    
-    <div>
-		<a href="/Administrateur/Produits">Produits</a>
-		<a href="/Administrateur/Utilisateurs">Utilisateurs</a>
-		<a href="/Administrateur/Commandes">Commandes</a>
-	</div>
-
-
-
+    </div>
+<br>
+<br>
+    <h1>Administrateur</h1>
+<br><br>
+    <div class="button-links">
+        <a href="/Administrateur/Produits">Produits</a>
+        <a href="/Administrateur/Utilisateurs">Utilisateurs</a>
+        <a href="/Administrateur/Commandes">Commandes</a>
+    </div>
 </body>
 </html>
-

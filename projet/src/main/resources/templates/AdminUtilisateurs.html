@@ -1,10 +1,63 @@
 <!DOCTYPE html>
+<html>
 <head>
     <title>Commandes</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        a {
+            text-decoration: none;
+            margin: 0 10px;
+            color: #000;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .navbar {
+            background-color: #4d2600; /* Marron */
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: #f5f5f5; /* Blanc */
+            margin: 0 10px;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4d2600;
+            text-decoration: underline;
+        }
+
+		.title-box {
+            border: 2px solid #4d2600;
+            margin: 20px 0;
+            padding: 10px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #4d2600;
+        }
+
         table {
             border-collapse: collapse;
             width: 100%;
+            margin-top: 20px;
         }
 
         th, td {
@@ -16,55 +69,59 @@
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
+
+        form button {
+            padding: 8px 15px;
+            background-color: #4d2600;
+            color: #f5f5f5;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #753b00;
+        }
     </style>
 </head>
 <body>
-		<div>
-		<a href="/index">Accueil</a>
-		<a href="/pageProduit">Page produits</a>
-		<a href="/Administrateur" th:if="${session.user.admin == true}">Administrateur</a>
-		<a href="Panier">Panier</a>
-		<div>
-<p>Welcome, <a th:href="@{/Utilisateur}" th:text="${session.user.username}"></a></p>
-
+    <div class="navbar">
+        <a href="/index">Accueil</a>
+        <a href="/pageProduit">Page produits</a>
+        <a href="/Administrateur" th:if="${session.user.admin == true}">Administrateur</a>
+        <a href="/Panier">Panier</a>
         <a href="/deconnexion">Deconnexion</a>
-        </div>
-   
-	
+    </div>
+
     <h1>Administrateur</h1>
+    <br>
+    <div class="title-box">
 
-
-   
-    
     <h2>Ajouter un Utilisateur</h2>
-    
+    </div>
     <div>
-		
-		
-<form action="/Administrateur/ajouter-utilisateur" method="post">
-    <label for="username">Nom d'utilisateur :</label>
-    <input type="text" id="username" name="username" required>
-    
-    <label for="password">Mot de passe :</label>
-    <input type="text" id="password" name="password" step="0.01" required>
-    
-    <label for="admin">Admin :</label>
-    <input type="radio" id="admin" name="admin" value="true"> Oui
-    <input type="radio" id="admin" name="admin" value="false" checked> Non
-    
-    <button type="submit">Ajouter l'utilisateur</button>
-</form>
+        <form action="/Administrateur/ajouter-utilisateur" method="post">
+            <label for="username">Nom d'utilisateur :</label>
+            <input type="text" id="username" name="username" required>
 
+            <label for="password">Mot de passe :</label>
+            <input type="text" id="password" name="password" step="0.01" required>
 
-</div>
+            <label for="admin">Admin :</label>
+            <input type="radio" id="admin" name="admin" value="true"> Oui
+            <input type="radio" id="admin" name="admin" value="false" checked> Non
 
-   <div th:if="${ErreurAjout}">
-    	<p th:text="${ErreurAjout}"></p>
-		</div>
+            <button type="submit">Ajouter l'utilisateur</button>
+        </form>
+    </div>
 
+    <div th:if="${ErreurAjout}">
+        <p th:text="${ErreurAjout}"></p>
+    </div>
+    <div class="title-box">
 
-    <h2>Utilisateur</h2>
-
+    <h2>Utilisateurs</h2>
+    </div>
     <table>
         <thead>
             <tr>
@@ -79,17 +136,15 @@
                 <td th:text="${utilisateur.username}">Nom d'utilisateur</td>
                 <td th:text="${utilisateur.password}">Mot de passe</td>
                 <td th:text="${utilisateur.admin}">Admin</td>
-             	<td>
-				<form th:action="@{/Administrateur/modifier-utilisateur/{utilisateurId}(utilisateurId=${utilisateur.id})}" method="get">
-   				<button type="submit">Modifier</button>
-				</form>
-				<form action="/Administrateur/supprimer-utilisateur" method="post">
-    			<input type="hidden" name="utilisateurId" th:value="${utilisateur.id}" />
-    			<button type="submit">Supprimer</butto>
-				</form>
-
-
-				</td>
+                <td>
+                    <form th:action="@{/Administrateur/modifier-utilisateur/{utilisateurId}(utilisateurId=${utilisateur.id})}" method="get">
+                        <button type="submit">Modifier</button>
+                    </form>
+                    <form action="/Administrateur/supprimer-utilisateur" method="post">
+                        <input type="hidden" name="utilisateurId" th:value="${utilisateur.id}" />
+                        <button type="submit">Supprimer</button>
+                    </form>
+                </td>
             </tr>
         </tbody>
     </table>

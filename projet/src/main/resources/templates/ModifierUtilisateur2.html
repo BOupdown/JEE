@@ -1,27 +1,77 @@
 <!DOCTYPE html>
 <head>
     <title>Modifier</title>
-  
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5; /* Blanc */
+            color: #4d2600; /* Marron */
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            margin-top: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        label {
+            margin-top: 10px;
+            display: block;
+        }
+
+        input {
+            padding: 8px;
+            margin-top: 6px;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        button {
+            background-color: #4d2600; /* Marron */
+            color: #f5f5f5; /* Blanc */
+            border: none;
+            padding: 8px 14px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 10px 0;
+            transition-duration: 0.4s;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #753b00;
+        }
+
+        div {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-
-<h1>Modifier identifiants</h1>
-
-		
-<form action="/modifier-utilisateur" method="post">
-    <label for="username">Nom d'utilisateur :</label>
-    <input type="text" id="username" name="username" th:value="${session.user.username}" required>
+    <h1>Modifier identifiants</h1>
     
-    <label for="password">Mot de passe :</label>
-    <input type="password" id="password" name="password" step="0.01" th:value="${session.user.password}" required>
-    
-    <button type="submit">Modifier l'utilisateur</button>
-</form>
+    <form action="/modifier-utilisateur" method="post">
+        <label for="username">Nom d'utilisateur :</label>
+        <input type="text" id="username" name="username" th:value="${session.user.username}" required>
+        
+        <label for="password">Mot de passe :</label>
+        <input type="password" id="password" name="password" step="0.01" th:value="${session.user.password}" required>
+        
+        <button type="submit">Modifier l'utilisateur</button>
+    </form>
 
-   <div th:if="${ErreurModif}">
-    	<p th:text="${ErreurModif}"></p>
-		</div>
-
-    
+    <div th:if="${ErreurModif}">
+        <p th:text="${ErreurModif}"></p>
+    </div>
 </body>
 </html>

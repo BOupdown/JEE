@@ -1,10 +1,42 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-	   <style>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5; /* Blanc */
+            color: #4d2600; /* Marron */
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        .navbar {
+            background-color: #4d2600; /* Marron */
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: #f5f5f5; /* Blanc */
+            margin: 0 10px;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+        h1 {
+            margin-top: 20px;
+        }
+
         table {
             border-collapse: collapse;
             width: 100%;
+            margin-top: 20px;
         }
 
         th, td {
@@ -16,21 +48,56 @@
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
+
+        form {
+            display: inline;
+        }
+
+        button {
+            background-color: #4d2600; /* Marron */
+            color: #f5f5f5; /* Blanc */
+            border: none;
+            padding: 8px 14px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #753b00;
+        }
+        
+        		.title-box {
+            border: 2px solid #4d2600;
+            margin: 20px 0;
+            padding: 10px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #4d2600;
+        }
+
     </style>
     <title>Mon compte</title>
 </head>
 <body>
-    <div>
+    <div class="navbar">
         <a href="/index">Accueil</a>
         <a href="/pageProduit">Page produits</a>
         <a href="/Administrateur" th:if="${session.user.admin == true}">Administrateur</a>
         <a href="/deconnexion">Déconnexion</a>
-
     </div>
-    
+
     <h1>Mon compte</h1>
+	    <div class="title-box">
 
     <h2>Identifiants</h2>
+    </div>
     <table>
         <tr>
             <th>Nom d'utilisateur:</th>
@@ -46,30 +113,26 @@
                 <form action="/modifier-utilisateur" method="get">
                     <button type="submit">Modifier</button>
                 </form>
-                  <form action="/supprimer-utilisateur" method="post">
-        <button type="submit">Supprimer</button>
-    </form>
+                <form action="/supprimer-utilisateur" method="post">
+                    <button type="submit">Supprimer</button>
+                </form>
             </td>
         </tr>
     </table>
-      
-      
-    
-    
-    <h2>Commandes</h2>
+	    <div class="title-box">
 
+    <h2>Commandes</h2>
+    </div>
     <table>
         <thead>
             <tr>
-				<th>N° de commande</th>
+                <th>N° de commande</th>
                 <th>Produits</th>
             </tr>
         </thead>
         <tbody>
-	
-
-				 <tr th:each="commande : ${commandes}">
-				   <td th:text="${commande.id}">id de la commande</td>
+            <tr th:each="commande : ${commandes}">
+                <td th:text="${commande.id}">id de la commande</td>
                 <td>
                     <ul>
                         <li th:each="ligneCommande : ${commande.commandeLignes}">
@@ -78,13 +141,8 @@
                         </li>
                     </ul>
                 </td>
-                
-
+            </tr>
         </tbody>
     </table>
-    
-    
-    
-    
 </body>
 </html>
