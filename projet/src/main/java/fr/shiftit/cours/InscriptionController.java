@@ -49,7 +49,18 @@ public class InscriptionController {
         Utilisateur utilisateur = new Utilisateur();
         utilisateur.setUsername(username);
         utilisateur.setPassword(password);
-        utilisateur.setAdmin(false);
+        
+        
+        if(utilisateurRepository.count()>0) {
+        	
+            utilisateur.setAdmin(false);
+        	
+        }else {
+        	
+        	utilisateur.setAdmin(true);
+        }
+        
+  
         utilisateurRepository.save(utilisateur);
         return "redirect:/connexion";
     }

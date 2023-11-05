@@ -10,5 +10,6 @@ public interface CommandeLineRepository extends JpaRepository<CommandeLigne, Lon
 	List<CommandeLigne> findByCommande(Commande commandeeee);
 
 	void deleteByCommandeId(Long id);
+	void deleteByCommandeIn(List<Commande> commande);
 	
 }

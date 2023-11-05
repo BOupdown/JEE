@@ -9,6 +9,7 @@ public interface CommandeRepository extends JpaRepository<Commande, Long> {
 
     List<Commande> findByUtilisateur(Utilisateur utilisateur);
     void deleteById(Long id);
+    void deleteByUtilisateur(Utilisateur utilisateur);
 
 
 }

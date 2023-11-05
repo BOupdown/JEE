@@ -3,6 +3,7 @@ package fr.shiftit.cours;
 import java.util.List;
 import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,11 +22,11 @@ public class Utilisateur {
 	
 	private Boolean admin;
 	
-	@OneToMany(mappedBy="utilisateur")
+	@OneToMany(mappedBy="utilisateur",cascade = CascadeType.ALL,orphanRemoval = true)
 	private List<Commande> commande;
 	
 	
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
 	private List<Avis> avis;
 
 

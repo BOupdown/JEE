@@ -21,6 +21,8 @@ public class AdminUtilisateurController {
     private UtilisateurRepository utilisateurRepository;
 	
 	
+	@Autowired
+    private AvisRepository avisRepository;
 	
 	
 	@GetMapping(path = "/Utilisateurs")
@@ -121,6 +123,7 @@ public class AdminUtilisateurController {
 			
 			if(user.getAdmin()) {
 				
+				avisRepository.deleteByUtilisateur(utilisateurRepository.findById(utilisateurId).get());
 				utilisateurRepository.deleteById(utilisateurId);
 			    return "redirect:/Administrateur/Utilisateurs";
 			}else {

@@ -18,10 +18,10 @@ public class Commande {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	
-	@OneToMany(mappedBy="commande")
+	@OneToMany(mappedBy="commande",cascade = CascadeType.ALL,orphanRemoval = true)
 	private List<CommandeLigne> commandeLignes;
 	
-	@ManyToOne(cascade = CascadeType.PERSIST) // or CascadeType.ALL
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	private Utilisateur utilisateur;
 
 	

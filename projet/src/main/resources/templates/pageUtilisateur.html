@@ -110,6 +110,9 @@
         <a href="/index">Accueil</a>
         <a th:if="${session.user != null and session.user.admin == true}"href="/Administrateur">Administrateur</a>
         <a href="/pageProduit">Page produits</a>
+         <div th:if="${session.user != null}">
+        <a href="/Panier">Panier</a>
+        </div>
         <a href="/deconnexion">Déconnexion</a>
     </div>
 

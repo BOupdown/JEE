@@ -2,6 +2,7 @@ package fr.shiftit.cours;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,11 +28,11 @@ public class Produit {
 	private List<Categorie> categories;
 	
 	
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
 	private List<Avis> avis;
 	
 	
-	@OneToMany(mappedBy="produit")
+	@OneToMany(mappedBy="produit",cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<CommandeLigne> commandeLignes;
 	
 	

@@ -20,6 +20,9 @@ public class UtilisateurController {
 	@Autowired
 	private CommandeRepository commandeRepository;
 	
+	@Autowired
+	private AvisRepository avisRepository;
+	
 	
 	
 	@GetMapping(path = "/Utilisateur")
@@ -53,9 +56,11 @@ public class UtilisateurController {
     	if(session.getAttribute("user") != null) {
 			//On vérifie si l'attibut user est non null
 			
+    		
+    		
 			Utilisateur utilisateur = (Utilisateur) session.getAttribute("user");
 			
-
+				avisRepository.deleteByUtilisateur(utilisateur);
 				
 				utilisateurRepository.deleteById(utilisateur.getId());
 			    return "redirect:/deconnexion";
