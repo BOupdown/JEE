@@ -26,7 +26,7 @@ public class Utilisateur {
 	private List<Commande> commande;
 	
 	
-	@OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+	@OneToMany(mappedBy="utilisateur",cascade = CascadeType.ALL,orphanRemoval = true)
 	private List<Avis> avis;
 
 

@@ -20,6 +20,8 @@ public class AdminProduitController {
 	@Autowired
     private ProduitRepository produitRepository;
 	
+	@Autowired
+    private AvisRepository avisRepository;
 	
 	
 	
@@ -125,7 +127,7 @@ public class AdminProduitController {
 			Utilisateur user = (Utilisateur) session.getAttribute("user");
 			
 			if(user.getAdmin()) {
-				
+				avisRepository.deleteByProduit(produitRepository.findById(produitId).get());
 				produitRepository.deleteById(produitId);
 			    return "redirect:/Administrateur/Produits";
 			}else {

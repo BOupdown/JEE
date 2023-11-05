@@ -10,5 +10,6 @@ public interface AvisRepository extends JpaRepository<Avis, String> {
 	List<Avis> findByProduit(Produit produit);
     void deleteById(Long id);
     void deleteByUtilisateur(Utilisateur utilisateur);
+    void deleteByProduit(Produit produit);
 }
 

@@ -28,7 +28,7 @@ public class Produit {
 	private List<Categorie> categories;
 	
 	
-	@OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+	@OneToMany(mappedBy="produit",cascade = CascadeType.ALL,orphanRemoval = true)
 	private List<Avis> avis;
 	
 	

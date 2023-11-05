@@ -132,10 +132,25 @@ public class CommandeController {
 	    if (utilisateur == null) {
 	        return "redirect:/connexion";
 	    } else {
+	        List<CommandeLigne> commandeLignes = (List<CommandeLigne>) session.getAttribute("commandeLignes");
+	    	
+	    	 for (CommandeLigne commandeLigne : commandeLignes) {
+	                Produit produit = commandeLigne.getProduit();
+	                Long quantite = commandeLigne.getQte();
+
+	                Long currentStock = produit.getStock();
+	                if (currentStock < quantite) {
+	                	
+	                	model.addAttribute("erreur", "Erreur, nos stock sont insuffisant !");
+	                	 model.addAttribute("commandeLignes", commandeLignes);
+	         	        return "Panier";
+	                	
+	                }
+	    	
+	    	 }
+	 	
 	        Commande nouvelleCommande = new Commande();
 	        nouvelleCommande.setUtilisateur(utilisateur);
-
-	        List<CommandeLigne> commandeLignes = (List<CommandeLigne>) session.getAttribute("commandeLignes");
 
 	        if (commandeLignes != null && !commandeLignes.isEmpty()) {
 	            commandeRepository.save(nouvelleCommande);
@@ -143,9 +158,7 @@ public class CommandeController {
 	            for (CommandeLigne commandeLigne : commandeLignes) {
 	                Produit produit = commandeLigne.getProduit();
 	                Long quantite = commandeLigne.getQte();
-
 	                Long currentStock = produit.getStock();
-	                if (currentStock >= quantite) {
 
 	                    CommandeLigne nouvelleCommandeLigne = new CommandeLigne();
 	                    nouvelleCommandeLigne.setQte(quantite);
@@ -157,14 +170,17 @@ public class CommandeController {
 	                    produit.setStock(currentStock - quantite);
 	                    produitRepository.save(produit);
 	                }
-	            }
+	                	
+	                	
+	                }
+	          
 
 	            session.setAttribute("commandeLignes", new ArrayList<CommandeLigne>());
 	        }
 
 	        return "redirect:/Panier";
 	    }
-	}
+
 
 
 

@@ -138,6 +138,9 @@
     <form method="post" action="/Commander">
         <button type="submit">Passer la commande</button>
     </form>
+                 <div style="color:red" th:if="${erreur}">
+            <p th:text="${erreur}"></p>
+        </div>
 <br>
     <form method="post" action="/suppPanier">
         <button type="submit">Supprimer le panier</button>
