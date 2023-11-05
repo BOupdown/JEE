@@ -2,6 +2,23 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <style>
+		        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%; /* Étendre sur toute la largeur */
+        }
+        .footer-content {
+            background-color: #4d2600; /* Couleur de la bande */
+            color: #fff; /* Couleur du texte */
+            padding: 10px; /* Espace à l'intérieur de la bande */
+            text-align: center; /* Alignement du contenu */
+            font-size: 10px; /* Taille de la police pour le copyright */
+        }
+        .footer-content img {
+            width: 100px; /* Ajustez la taille de votre logo */
+            height: auto; /* Pour conserver les proportions */
+        }
+
         body {
             font-family: Arial, sans-serif;
             background-color: #f5f5f5; /* Blanc */
@@ -30,7 +47,8 @@
         }
 
         h1 {
-            margin-top: 20px;
+            text-align: center;
+            color: #4d2600;
         }
 
         table {
@@ -86,10 +104,12 @@
     <title>Mon compte</title>
 </head>
 <body>
+	            <h1>BYKE ADVENTURE</h1>
+
     <div class="navbar">
         <a href="/index">Accueil</a>
+        <a th:if="${session.user != null and session.user.admin == true}"href="/Administrateur">Administrateur</a>
         <a href="/pageProduit">Page produits</a>
-        <a href="/Administrateur" th:if="${session.user.admin == true}">Administrateur</a>
         <a href="/deconnexion">Déconnexion</a>
     </div>
 
@@ -141,8 +161,18 @@
                         </li>
                     </ul>
                 </td>
-            </tr>
+            </tr>		        
         </tbody>
     </table>
+        <footer>
+        <div class="footer-content">
+            <!-- Insérer le texte du copyright -->
+            <p>&copy; 2023 BYKE ADVENTURE. Tous droits réservés.</p>
+            <p>By ROCKET CODE</p>
+            <p>Contact : rocketcode@gmail.com</p>
+        </div>
+    </footer>
+
+
 </body>
 </html>

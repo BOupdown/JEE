@@ -3,6 +3,7 @@
 <head>
     <title>Commandes</title>
     <style>
+
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -47,7 +48,6 @@
         h1 {
             text-align: center;
             color: #4d2600;
-            text-decoration: underline;
         }
 
         h2 {
@@ -86,8 +86,14 @@
     </style>
 </head>
 <body>
+	            <h1>BYKE ADVENTURE</h1>
+
     <div class="navbar">
         <a href="/index">Accueil</a>
+                <div th:if="${session.user != null}">
+		<a th:href="@{/Utilisateur}" th:text="${session.user.username}"></a>
+        </div>
+
         <a href="/pageProduit">Page produits</a>
         <a href="/Administrateur" th:if="${session.user.admin == true}">Administrateur</a>
         <a href="/Panier">Panier</a>
@@ -130,5 +136,6 @@
             </tr>
         </tbody>
     </table>
+
 </body>
 </html>

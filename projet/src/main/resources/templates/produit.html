@@ -3,6 +3,23 @@
 <head>
     <title>Détails du Produit</title>
     <style>
+		        footer {
+            position: relative;
+            bottom: 0;
+            width: 100%; /* Étendre sur toute la largeur */
+        }
+        .footer-content {
+            background-color: #4d2600; /* Couleur de la bande */
+            color: #fff; /* Couleur du texte */
+            padding: 10px; /* Espace à l'intérieur de la bande */
+            text-align: center; /* Alignement du contenu */
+            font-size: 10px; /* Taille de la police pour le copyright */
+        }
+        .footer-content img {
+            width: 100px; /* Ajustez la taille de votre logo */
+            height: auto; /* Pour conserver les proportions */
+        }
+
         body {
             display: flex;
             flex-direction: column;
@@ -44,12 +61,19 @@
             font-weight: bold;
             font-size: 18px;
         }
+        h1 {
+            text-align: center;
+            color: #4d2600;
+        }
     </style>
 </head>
 <body>
+	            <h1>BYKE ADVENTURE</h1>
+
     <div class="navbar">
         <a href="/index">Accueil</a>
-        <a href="/Administrateur" th:if="${session.user != null && session.user.admin == true}">Administrateur</a>
+		<a th:if="${session.user != null}" th:href="@{/Utilisateur}" th:text="${session.user.username}"></a>
+        <a th:if="${session.user != null and session.user.admin == true}"href="/Administrateur">Administrateur</a>
         <a href="/pageProduit">Liste Produits</a>
         <a href="/Panier">Panier</a>
         <a href="/deconnexion" th:if="${session.user != null}">Déconnexion</a>
@@ -61,6 +85,7 @@
     <!-- Section des détails du produit -->
     <div th:if="${produit != null}">
         <h2>Nom du Produit: <span th:text="${produit.nom}"></span></h2>
+        <img th:src="${produit.photo}" style="max-width: 200px; max-height: 200px;">
         <p>Description: <span th:text="${produit.description}"></span></p>
         <p>Prix: <span th:text="${produit.prix}"></span></p>
         <p>Stock: <span th:text="${produit.stock}"></span></p>
@@ -73,17 +98,22 @@
             <input type="number" id="nbExemplaires" name="nbExemplaires" min="1"><br><br>
             <button type="submit">Ajouter au panier</button>
         </form>
-
+        <br>
+		<hr>
         <!-- Formulaire pour déposer un avis -->
+        <h3>Evaluer ce produit :</h3>
         <form action="deposer-avis" method="post">
             <input type="hidden" name="produitId" th:value="${produit.id}" />
             <label for="description">Description de l'avis :</label>
+            <br>
             <textarea id="description" name="description" rows="4" cols="50" required></textarea>
-            <label for="note">Note :</label>
+            <br><br>
+            <label for="note">Note /10 :</label>
             <input type="number" id="note" name="note" min="0" max="10" step="0.1" required />
             <button type="submit">Soumettre l'avis</button>
         </form>
-
+		<hr>
+		<br>
         <h3>Avis des utilisateurs :</h3>
         
         <!-- Section des avis des utilisateurs -->
@@ -108,5 +138,14 @@
     <div th:unless="${produit != null}">
         <p>Produit non trouvé.</p>
     </div>
+        <footer>
+        <div class="footer-content">
+            <!-- Insérer le texte du copyright -->
+            <p>&copy; 2023 BYKE ADVENTURE. Tous droits réservés.</p>
+            <p>By ROCKET CODE</p>
+            <p>Contact : rocketcode@gmail.com</p>
+        </div>
+    </footer>
+
 </body>
 </html>

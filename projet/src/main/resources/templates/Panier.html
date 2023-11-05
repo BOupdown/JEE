@@ -3,6 +3,26 @@
 <head>
     <title>Panier</title>
     <style>
+		.button-container {
+    text-align: center;
+}
+		        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%; /* Étendre sur toute la largeur */
+        }
+        .footer-content {
+            background-color: #4d2600; /* Couleur de la bande */
+            color: #fff; /* Couleur du texte */
+            padding: 10px; /* Espace à l'intérieur de la bande */
+            text-align: center; /* Alignement du contenu */
+            font-size: 10px; /* Taille de la police pour le copyright */
+        }
+        .footer-content img {
+            width: 100px; /* Ajustez la taille de votre logo */
+            height: auto; /* Pour conserver les proportions */
+        }
+
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -72,16 +92,21 @@
         form button:hover {
             background-color: #753b00;
         }
+        h1 {
+            text-align: center;
+            color: #4d2600;
+        }
     </style>
 </head>
 <body>
+	            <h1>BYKE ADVENTURE</h1>
+
     <div class="navbar">
         <a href="/index">Accueil</a>
+		<a th:if="${session.user != null}" th:href="@{/Utilisateur}" th:text="${session.user.username}"></a>
+        <a th:if="${session.user != null and session.user.admin == true}"href="/Administrateur">Administrateur</a>
         <a href="/pageProduit">Liste Produits</a>
-        <a href="/Administrateur" th:if="${session.user.admin == true}">Administrateur</a>
-        <div>
-            <a href="/deconnexion">Deconnexion</a>
-        </div>
+        <a href="/deconnexion">Deconnexion</a>
     </div>
 	    <div class="title-box">
 
@@ -109,14 +134,23 @@
         </tbody>
     </table>
 
+<div class="button-container">
     <form method="post" action="/Commander">
         <button type="submit">Passer la commande</button>
     </form>
-
-    <br>
-
+<br>
     <form method="post" action="/suppPanier">
         <button type="submit">Supprimer le panier</button>
     </form>
+</div>
+    <footer>
+        <div class="footer-content">
+            <!-- Insérer le texte du copyright -->
+            <p>&copy; 2023 BYKE ADVENTURE. Tous droits réservés.</p>
+            <p>By ROCKET CODE</p>
+            <p>Contact : rocketcode@gmail.com</p>
+        </div>
+    </footer>
+
 </body>
 </html>

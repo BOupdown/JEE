@@ -3,6 +3,23 @@
 <head>
     <title>Administrateur</title>
     <style>
+		        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%; /* Étendre sur toute la largeur */
+        }
+        .footer-content {
+            background-color: #4d2600; /* Couleur de la bande */
+            color: #fff; /* Couleur du texte */
+            padding: 10px; /* Espace à l'intérieur de la bande */
+            text-align: center; /* Alignement du contenu */
+            font-size: 10px; /* Taille de la police pour le copyright */
+        }
+        .footer-content img {
+            width: 100px; /* Ajustez la taille de votre logo */
+            height: auto; /* Pour conserver les proportions */
+        }
+
         /* Styles pour le navbar */
         .navbar {
             background-color: #4d2600; /* Marron */
@@ -26,7 +43,6 @@
         h1 {
             text-align: center;
             color: #4d2600;
-            text-decoration: underline;
         }
 
         div.button-links {
@@ -53,11 +69,22 @@
             background-color: #753b00;
             border: 1px solid #753b00;
         }
+        body {
+    display: block;
+    margin: 0px;
+}
+
     </style>
 </head>
 <body>
+	            <h1>BYKE ADVENTURE</h1>
+
     <div class="navbar">
         <a href="/index">Accueil</a>
+                <div th:if="${session.user != null}">
+		<a th:href="@{/Utilisateur}" th:text="${session.user.username}"></a>
+        </div>
+
         <a href="/pageProduit">Page produits</a>
         <a href="/Administrateur">Administrateur</a>
         <a href="/Panier">Panier</a>
@@ -72,5 +99,14 @@
         <a href="/Administrateur/Utilisateurs">Utilisateurs</a>
         <a href="/Administrateur/Commandes">Commandes</a>
     </div>
+    <footer>
+        <div class="footer-content">
+            <!-- Insérer le texte du copyright -->
+            <p>&copy; 2023 BYKE ADVENTURE. Tous droits réservés.</p>
+            <p>By ROCKET CODE</p>
+            <p>Contact : rocketcode@gmail.com</p>
+        </div>
+    </footer>
+
 </body>
 </html>

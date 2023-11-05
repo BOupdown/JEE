@@ -102,7 +102,13 @@
     </style>
 </head>
 <body>
+	            <h1>BYKE ADVENTURE</h1>
+
     <div class="navbar">
+		        <div th:if="${session.user != null}">
+		<a th:href="@{/Utilisateur}" th:text="${session.user.username}"></a>
+        </div>
+
         <a href="/index">Accueil</a>
         <a href="/pageProduit">Page produits</a>
         <a href="/Administrateur">Administrateur</a>
